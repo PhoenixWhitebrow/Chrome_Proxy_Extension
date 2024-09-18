@@ -43,13 +43,13 @@ function disable() {
 function apply() {
 	if (enabled.checked == true) {
 		let proxyHost = document.getElementById("proxyHost").value;
-		let proxyPort = Number(document.getElementById("proxyPort").value);
+		let proxyPort = document.getElementById("proxyPort").value;
 		let config = {
 			mode: "fixed_servers",
 			rules: {
 				singleProxy: {
 					host: proxyHost,
-					port: proxyPort
+					port: Number(proxyPort)
 				}
 			}
 		};
@@ -57,6 +57,8 @@ function apply() {
 			{value: config, scope: 'regular'},
 			function() {}
 		);
+		localStorage.setItem("proxyHost", proxyHost);
+		localStorage.setItem("proxyPort", proxyPort);
 	} else {
 		let config = {
 			mode: "system"
@@ -87,15 +89,18 @@ function get() {
 				enabled.checked = false;
 				icoOff();
 			} else if (config.value.mode == "fixed_servers") {
-				let proxyHost = document.getElementById("proxyHost");
-				let proxyPort = document.getElementById("proxyPort");
 				enabled.checked = true;
-				proxyHost.value = config.value.rules.singleProxy.host;
-				proxyPort.value = config.value.rules.singleProxy.port;
 				icoOn();
 			}
 		}
 	);
+	if (localStorage.getItem("proxyHost") != null
+		&& localStorage.getItem("proxyPort") != null) {
+		let proxyHost = document.getElementById("proxyHost");
+		let proxyPort = document.getElementById("proxyPort");
+		proxyHost.value = localStorage.getItem("proxyHost");
+		proxyPort.value = localStorage.getItem("proxyPort");
+	}
 }
 
 // Set icons to enabled state

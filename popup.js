@@ -13,12 +13,6 @@ enableBtn.addEventListener("click",() =>{
 		enable();
 });
 
-//// Listner for 'Show current settings' button click
-const showBtn = document.getElementById("showBtn");
-showBtn.addEventListener("click",() =>{    
-		show();
-});
-
 // 'Enabled' chekbox
 const enabled = document.getElementById("enabled");
 
@@ -44,13 +38,15 @@ function apply() {
 	if (enabled.checked == true) {
 		let proxyHost = document.getElementById("proxyHost").value;
 		let proxyPort = document.getElementById("proxyPort").value;
+		let passthrough = document.getElementById("passthrough").value;
 		let config = {
 			mode: "fixed_servers",
 			rules: {
 				singleProxy: {
 					host: proxyHost,
 					port: Number(proxyPort)
-				}
+				},
+			bypassList: [passthrough]
 			}
 		};
 		chrome.proxy.settings.set(
@@ -59,6 +55,7 @@ function apply() {
 		);
 		localStorage.setItem("proxyHost", proxyHost);
 		localStorage.setItem("proxyPort", proxyPort);
+		localStorage.setItem("passthrough", passthrough);
 	} else {
 		let config = {
 			mode: "system"
@@ -98,8 +95,10 @@ function get() {
 		&& localStorage.getItem("proxyPort") != null) {
 		let proxyHost = document.getElementById("proxyHost");
 		let proxyPort = document.getElementById("proxyPort");
+		let passthrough = document.getElementById("passthrough");
 		proxyHost.value = localStorage.getItem("proxyHost");
 		proxyPort.value = localStorage.getItem("proxyPort");
+		passthrough.value = localStorage.getItem("passthrough");
 	}
 }
 

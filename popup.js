@@ -20,10 +20,10 @@ showBtn.addEventListener("click",() =>{
 });
 
 // 'Enabled' chekbox
-enabled = document.getElementById("enabled");
+const enabled = document.getElementById("enabled");
 
 // Icon in the popup
-iconPopup = document.getElementById("icon");
+const iconPopup = document.getElementById("icon");
 
 // Enable proxy
 function enable() {
@@ -87,7 +87,11 @@ function get() {
 				enabled.checked = false;
 				icoOff();
 			} else if (config.value.mode == "fixed_servers") {
+				let proxyHost = document.getElementById("proxyHost");
+				let proxyPort = document.getElementById("proxyPort");
 				enabled.checked = true;
+				proxyHost.value = config.value.rules.singleProxy.host;
+				proxyPort.value = config.value.rules.singleProxy.port;
 				icoOn();
 			}
 		}

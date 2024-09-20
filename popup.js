@@ -3,79 +3,18 @@ window.onload = get();
 
 // Listner for 'Disable' button click
 const disableBtn = document.getElementById("disableBtn");
-disableBtn.addEventListener("click",() =>{    
+disableBtn.addEventListener("click",() => {    
 		disable();
 });
 
 // Listner for 'Enable' button click
 const	enableBtn = document.getElementById("enableBtn");
-enableBtn.addEventListener("click",() =>{    
+enableBtn.addEventListener("click",() => {    
 		enable();
 });
 
-// 'Enabled' chekbox
-const enabled = document.getElementById("enabled");
-
 // Icon in the popup
 const iconPopup = document.getElementById("icon");
-
-// Enable proxy
-function enable() {
-	enabled.checked = true;
-	apply();
-	icoOn();
-}
-
-// Disable proxy
-function disable() {
-	enabled.checked = false;
-	apply();
-	icoOff();
-}
-
-// Apply proxy settings
-function apply() {
-	if (enabled.checked == true) {
-		let proxyHost = document.getElementById("proxyHost").value;
-		let proxyPort = document.getElementById("proxyPort").value;
-		let passthrough = document.getElementById("passthrough").value;
-		let config = {
-			mode: "fixed_servers",
-			rules: {
-				singleProxy: {
-					host: proxyHost,
-					port: Number(proxyPort)
-				},
-			bypassList: [passthrough]
-			}
-		};
-		chrome.proxy.settings.set(
-			{value: config, scope: 'regular'},
-			function() {}
-		);
-		localStorage.setItem("proxyHost", proxyHost);
-		localStorage.setItem("proxyPort", proxyPort);
-		localStorage.setItem("passthrough", passthrough);
-	} else {
-		let config = {
-			mode: "system"
-		};
-		chrome.proxy.settings.set(
-			{value: config, scope: 'regular'},
-			function() {}
-		);
-	}
-}
-
-// Show current settings JSON
-function show() {
-	chrome.proxy.settings.get(
-		{'incognito': false},
-		function(config) {
-			alert(JSON.stringify(config));
-		}
-	);
-}
 
 // Initial settings check and popup configuration
 function get() {
@@ -83,16 +22,15 @@ function get() {
 		{'incognito': false},
 		function(config) {
 			if (config.value.mode == "system") {
-				enabled.checked = false;
 				icoOff();
 			} else if (config.value.mode == "fixed_servers") {
-				enabled.checked = true;
 				icoOn();
 			}
 		}
 	);
 	if (localStorage.getItem("proxyHost") != null
-		&& localStorage.getItem("proxyPort") != null) {
+		&& localStorage.getItem("proxyPort") != null
+		&& localStorage.getItem("passthrough") != null) {
 		let proxyHost = document.getElementById("proxyHost");
 		let proxyPort = document.getElementById("proxyPort");
 		let passthrough = document.getElementById("passthrough");
@@ -100,6 +38,52 @@ function get() {
 		proxyPort.value = localStorage.getItem("proxyPort");
 		passthrough.value = localStorage.getItem("passthrough");
 	}
+}
+
+// Enable proxy
+function enable() {
+	let proxyHost = document.getElementById("proxyHost").value;
+	let proxyPort = document.getElementById("proxyPort").value;
+	let passthrough = document.getElementById("passthrough").value;
+	let config = {
+		mode: "fixed_servers",
+		rules: {
+			singleProxy: {
+				host: proxyHost,
+				port: Number(proxyPort)
+			},
+		bypassList: [passthrough]
+		}
+	};
+	chrome.proxy.settings.set(
+		{value: config, scope: 'regular'},
+		function() {}
+	);
+	icoOn();
+	save();
+}
+
+// Disable proxy
+function disable() {
+	let config = {
+		mode: "system"
+	};
+	chrome.proxy.settings.set(
+		{value: config, scope: 'regular'},
+		function() {}
+	);
+	icoOff();
+	save();
+}
+
+// Save current settings to localStorage
+function save() {
+	let proxyHost = document.getElementById("proxyHost").value;
+	let proxyPort = document.getElementById("proxyPort").value;
+	let passthrough = document.getElementById("passthrough").value;
+	localStorage.setItem("proxyHost", proxyHost);
+	localStorage.setItem("proxyPort", proxyPort);
+	localStorage.setItem("passthrough", passthrough);
 }
 
 // Set icons to enabled state
@@ -128,4 +112,14 @@ iconsOff = {
 	"32":"images/icon-32.png",
 	"48":"images/icon-48.png",
 	"128":"images/icon-128.png"
+}
+
+// Show current settings JSON
+function show() {
+	chrome.proxy.settings.get(
+		{'incognito': false},
+		function(config) {
+			alert(JSON.stringify(config));
+		}
+	);
 }

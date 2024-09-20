@@ -5,24 +5,23 @@
     <link rel="stylesheet" type="text/css" href="popup.css"/>
   </head>
   <body>
-		<img id="icon" src="images/icon-48.png">
-		<h4>Proxy Settings</h4>
+		<img id="icon" src="images/icon-48.png" align="right">
+    <h3>Proxy Settings</h3>
     <div class="form" id="form">
-      <input class="checkbox" type="checkbox" id="enabled" name="enabled">
-      <label class="labels" for="enabled">Proxy enabled</label>
-      <br><br>
-      <label class="labels" for="proxyHost">Proxy Host:</label>
+      <br>
+      <label class="labels" for="proxyHost">Proxy Host:</label><br>
       <input class="inputs" type="text" id="proxyHost" name="proxyHost" value="127.0.0.1">
       <br>
-      <label class="labels" for="proxyPort">Proxy Port:</label>
+      <label class="labels" for="proxyPort">Proxy Port:</label><br>
       <input class="inputs" type="text" id="proxyPort" name="proxyPort" value="443">
       <br><br>
-      <label class="labels" for="passthrough">Passthrough:</label>
-      <textarea class="inputs" rows="3" style="resize:none;" id="passthrough" name="passthrough"></textarea>
+      <label class="labels" for="passthrough">Passthrough:</label><br>
+      <textarea class="inputs" rows="3" cols="17" style="resize:none;" id="passthrough" name="passthrough"></textarea>
     </div>
     <br>
     <div class="buttons" id="buttons">
       <input type="submit" id="disableBtn" value="Disable">
+      &nbsp;
       <input type="submit" id="enableBtn" value="Enable">
       <br><br>
     </div>

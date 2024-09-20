@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Phoenix Proxy CR",
-  "version": "1.0.2",
+  "version": "1.1",
   "description": "An extension for using proxy service in Google Chrome",
   "icons": {
     "16":"images/icon-16.png",
@@ -14,6 +14,5 @@
   ],
   "action": {
     "default_popup":"popup.html"
-  },
-  "background":{}
+  }
 }

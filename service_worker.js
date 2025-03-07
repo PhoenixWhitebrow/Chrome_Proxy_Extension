@@ -2,7 +2,7 @@
 chrome.runtime.onStartup.addListener(get);
 chrome.runtime.onInstalled.addListener(get);
 
-// Initial settings check and popup configuration
+// Initial settings check for status icon setup
 function get() {
   chrome.proxy.settings.get(
     {'incognito': false},
